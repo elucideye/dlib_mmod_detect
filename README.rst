@@ -19,6 +19,6 @@ Quick Start
     export CONFIG=Release
     polly.py --toolchain ${TOOLCHAIN} --config-all ${CONFIG} --install --verbose --reconfig
     find ${HOME}/path/to/images -name "*.jpg" > images.txt
-    _install/${TOOLCHAIN}/bin/dnn_mmod_find_thing_ex -i images.t -m _install/xcode/share/dlib_mmod_eye_detector.dat -o /tmp/
+    _install/${TOOLCHAIN}/bin/dnn_mmod_find_thing_ex -i images.txt -m _install/xcode/share/dlib_mmod_eye_detector.dat -o /tmp/
     
 ::
