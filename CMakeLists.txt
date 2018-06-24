@@ -22,3 +22,14 @@ foreach(name ${app_list})
   target_link_libraries(${name} PUBLIC dlib::dlib)
   install(TARGETS ${name} DESTINATION bin)
 endforeach()
+
+set(dlib_mmod_detect_release_url "https://github.com/elucideye/dlib_mmod_detect/releases/download/v0.0.1")
+
+hunter_private_data(
+  URL "${dlib_mmod_detect_release_url}/dlib_mmod_eye_detector.dat"
+  SHA1 "6e11a761ea712a7efe561d5360aed1de4acfc87f"
+  FILE "dlib_mmod_eye_detector.dat"
+  LOCATION DLIB_DNN_MMOD_EYE_DETECTOR
+)
+message("DLIB_DNN_MMOD_EYE_DETECTOR = ${DLIB_DNN_MMOD_EYE_DETECTOR}")
+install(FILES ${DLIB_DNN_MMOD_EYE_DETECTOR} DESTINATION share)
