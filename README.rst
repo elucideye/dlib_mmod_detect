@@ -3,7 +3,12 @@ dlib_mmod_detect
 
 |Travis| |Appveyor| |License (3-Clause BSD)|
 
-A `dlib  <https://github.com/davisking/dlib>`__ mmod object detection sample with a pre-trained eye detector built with the `Hunter <https://github.com/ruslo/hunter>`__ package manager.
+A `dlib  <https://github.com/davisking/dlib>`__ mmod object detection sample with a pre-trained eye detector built with the `Hunter <https://github.com/ruslo/hunter>`__ package manager.  This is a simple test bed for experimenting with dlib's dnn toolkit.
+
+Sample test set output for training a small object detector with 500x2=1000 manually annotated eye crops (without occlusion) from unsplash.com face images.
+
+.. figure::  https://user-images.githubusercontent.com/554720/41860352-7cdb50d8-786c-11e8-9a4d-7a0520533c1f.jpg 
+   :alt: unsplash_face_montage
 
 Quick Start
 -----------
