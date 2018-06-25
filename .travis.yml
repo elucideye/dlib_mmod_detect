@@ -1,0 +1,102 @@
+# OSX/Linux (https://github.com/travis-ci-tester/toolchain-table)
+
+language:
+  - cpp
+
+# Container-based infrastructure (Linux)
+# * https://docs.travis-ci.com/user/migrating-from-legacy/#How-can-I-use-container-based-infrastructure%3F
+sudo:
+  - false
+
+dist:
+  - trusty
+
+# Install packages differs for container-based infrastructure
+# * https://docs.travis-ci.com/user/migrating-from-legacy/#How-do-I-install-APT-sources-and-packages%3F
+# List of available packages:
+# * https://github.com/travis-ci/apt-package-whitelist/blob/master/ubuntu-trusty
+# List of available sources:
+# * https://github.com/travis-ci/apt-source-whitelist/blob/master/ubuntu.json
+addons:
+  apt:
+    sources:
+      - ubuntu-toolchain-r-test
+    packages:
+      # For ogles_gpgpu (GL library)
+      - libgl1-mesa-dev
+
+      # GCC 5
+      - g++-5
+
+      # pip3
+      - python3-pip
+
+matrix:
+  include:
+    # Linux {
+
+    - os: linux
+      env: >
+        TOOLCHAIN=clang-fpic-hid-sections
+        CONFIG=Release
+        INSTALL=--strip
+        
+    - os: linux
+      env: >
+        TOOLCHAIN=gcc-5-pic-hid-sections-lto
+        CONFIG=Release
+        INSTALL=--strip
+
+    - os: linux
+      env: >
+        TOOLCHAIN=android-ndk-r17-api-24-arm64-v8a-clang-libcxx14
+        CONFIG=Release
+        INSTALL=--strip
+    # }
+
+    # OSX {
+
+    - os: osx
+      osx_image: xcode9.3
+      env: >
+        TOOLCHAIN=osx-10-13
+        CONFIG=Release
+        INSTALL=--install
+
+    - os: osx
+      osx_image: xcode8.3
+      env: >
+        TOOLCHAIN=ios-nocodesign-10-3-arm64-dep-9-0-device-libcxx-hid-sections
+        CONFIG=MinSizeRel
+        INSTALL=--install
+
+    - os: osx
+      osx_image: xcode8.3
+      env: >
+        TOOLCHAIN=osx-10-12-sanitize-address-hid-sections
+        CONFIG=Release
+        INSTALL=--install
+
+    - os: osx
+      env: >
+        TOOLCHAIN=android-ndk-r10e-api-19-armeabi-v7a-neon-hid-sections
+        CONFIG=MinSizeRel
+        INSTALL=--strip
+    # }
+
+# disable the default submodule logic to support local modification of .gitmodules paths
+git:
+  submodules: false
+
+# See https://docs.travis-ci.com/user/private-dependencies/#API-Token
+# CI_USER_TOKEN is added to .travis.yml settings
+
+install:
+  - source bin/hunter_env.sh
+
+script:
+  - bin/build-travis.sh "${TOOLCHAIN}" "${CONFIG}" "${INSTALL}"
+
+branches:
+  except:
+    - /^pr\..*/
