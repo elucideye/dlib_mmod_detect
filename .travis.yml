@@ -82,6 +82,7 @@ matrix:
         TOOLCHAIN=android-ndk-r10e-api-19-armeabi-v7a-neon-hid-sections
         CONFIG=MinSizeRel
         INSTALL=--strip
+
     # }
 
 # disable the default submodule logic to support local modification of .gitmodules paths
