@@ -28,8 +28,7 @@ Quick Start
 
 .. |Travis| image:: https://img.shields.io/travis/elucideye/dlib_mmod_detect/master.svg?style=flat-square&label=Linux%20OSX%20Android%20iOS
    :target: https://travis-ci.org/elucideye/dlib_mmod_detect/builds
-.. |Appveyor| image:: https://img.shields.io/appveyor/ci/headupinclouds/dlib_mmod_detect.svg?style=flat-square&label=Windows
-   :target: https://ci.appveyor.com/project/headupinclouds/dlib_mmod_detect
+.. |Appveyor| image:: https://img.shields.io/appveyor/ci/headupinclouds/dlib-mmod-detect.svg?style=flat-square&label=Windows
 .. |License (3-Clause BSD)| image:: https://img.shields.io/badge/license-BSD%203--Clause-brightgreen.svg?style=flat-square
    :target: http://opensource.org/licenses/BSD-3-Clause
    
