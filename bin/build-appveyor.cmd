@@ -12,4 +12,4 @@ python %POLLY_ROOT%\bin\polly.py ^
 --verbose ^
 --config "%1%" ^
 --toolchain "%2%" ^
-"%3%"
+--install
