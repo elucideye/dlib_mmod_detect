@@ -5,8 +5,8 @@ option(HUNTER_KEEP_PACKAGE_SOURCES "Keep" ON)
 include("cmake/HunterGate.cmake")
 
 HunterGate(
-    URL "https://github.com/ruslo/hunter/archive/v0.22.16.tar.gz"
-    SHA1 "84153076a3cebf4869c904fa5c93ea309386b583"
+    URL "https://github.com/ruslo/hunter/archive/v0.22.29.tar.gz"
+    SHA1 "61e9583824b956b064aa8819c56c4b134bae86bc"
     LOCAL # cmake/Hunter/config.cmake
 )
 
@@ -26,8 +26,8 @@ endforeach()
 set(dlib_mmod_detect_release_url "https://github.com/elucideye/dlib_mmod_detect/releases/download/v0.0.1")
 
 hunter_private_data(
-  URL "${dlib_mmod_detect_release_url}/dlib_mmod_eye_detector.dat"
-  SHA1 "6e11a761ea712a7efe561d5360aed1de4acfc87f"
+  URL "${dlib_mmod_detect_release_url}/dlib_mmod_eye_detector_v2.dat"
+  SHA1 "89a93bfd770259fbf415b67501c665ad6934c537"
   FILE "dlib_mmod_eye_detector.dat"
   LOCATION DLIB_DNN_MMOD_EYE_DETECTOR
 )

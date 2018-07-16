@@ -100,8 +100,12 @@ int main(int argc, char** argv) try
 
     std::vector<matrix<rgb_pixel>> images_train, images_test;
     std::vector<std::vector<mmod_rect>> boxes_train, boxes_test;
-    load_image_dataset(images_train, boxes_train, data_directory+"/training.xml");
-    load_image_dataset(images_test,  boxes_test,  data_directory+"/testing.xml");
+        
+    image_dataset_file train_file = data_directory+"/training.xml";
+    image_dataset_file test_file = data_directory+"/testing.xml";
+        
+    load_image_dataset(images_train, boxes_train, train_file.shrink_big_images(60*40));
+    load_image_dataset(images_test,  boxes_test,  test_file.shrink_big_images(60*40));
 
     // When I was creating the dlib vehicle detection dataset I had to label all the things
     // in each image.  MMOD requires all things to be labeled, since any unlabeled part of an
