@@ -99,6 +99,7 @@ int main(int argc, char **argv) try
     parser.add_option("i", "Input image filename or list of filenames with *.txt extension.", 1);
     parser.add_option("m", "Detector model layout (must match dnn_mmod_sample_detector.h)", 1);
     parser.add_option("o", "Output directory for annotated images.", 1);
+    parser.add_option("e", "Eye crop (if two eyes found)", 1);
     
     parser.parse(argc, argv);
 
@@ -127,7 +128,7 @@ int main(int argc, char **argv) try
         
     const std::string network_filename = parser.option("m").argument();
 
-        std::string output_directory;
+    std::string output_directory;
     if(parser.option("o"))
     {
         output_directory = parser.option("o").argument();
@@ -142,6 +143,8 @@ int main(int argc, char **argv) try
         auto index = i; // need copy here
         jobs.enqueue(index);
     }
+
+    bool do_eye_crop = parser.option("e");
         
     struct fs_image
     {
@@ -187,9 +190,16 @@ int main(int argc, char **argv) try
     fs_image image;
     while(images.dequeue(image))
     {
-        if(image.sentinel && (++sentinels == 4))
+        if(image.sentinel)
         {
-            break;
+            if(++sentinels == 4)
+            {
+                break;
+            }
+            else
+            {
+                continue;
+            }
         }
         
 #if !defined(DLIB_NO_GUI_SUPPORT)
@@ -213,6 +223,47 @@ int main(int argc, char **argv) try
         }
         
         std::cout << image.index << ' ' << filename << ' ' << detections.size();
+
+        if(do_eye_crop)
+        {
+            // Assume two detections == right + left eye:
+            if(detections.size() == 2)
+            {
+                dlib::matrix<rgb_pixel> details;
+            
+                auto c0 = dlib::center(detections[0].rect);
+                auto c1 = dlib::center(detections[1].rect);
+            
+                if(c1.x() < c0.x())
+                {
+                    std::swap(c0, c1);
+                }
+            
+                const float iod =  dlib::length(c0 - c1);
+                const float width = iod * 0.6;
+                std::vector<dlib::chip_details> rois =
+                    {
+                        dlib::centered_rect(c0, width, width * 3.0f/4.0f),
+                        dlib::centered_rect(c1, width, width * 3.0f/4.0f)
+                    };
+            
+                dlib::array<dlib::matrix<rgb_pixel>> chips;
+                dlib::extract_image_chips(image.image, rois, chips);
+            
+                for(std::size_t i = 0; i < chips.size(); i++)
+                {
+                    std::string output_filename;
+                    output_filename += output_directory;
+                    output_filename += "/";
+                    output_filename += basename(filename);
+                    output_filename += "_";
+                    output_filename += std::to_string(i);
+                    output_filename += ".jpg";
+                    dlib::save_jpeg(chips[i], output_filename);
+                }
+            }
+        }
+
         for (const auto& d : detections)
         {
             const auto &roi = d.rect;
@@ -227,6 +278,8 @@ int main(int argc, char **argv) try
             win.add_overlay(rect, rgb_pixel(255,0,0));
 #endif
         }
+
+
         std::cout << std::endl;
 
         if(!output_directory.empty())
